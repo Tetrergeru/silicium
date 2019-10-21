@@ -44,8 +44,8 @@ module Silicium
         @vertices[from] << to
       end
 
-      def clone #respond_to?(:clone) ? v.clone : v
-        g = OrientedGraph.new((@vertices.map {|k, v| { v: k, i: v.to_a }}).to_a)
+      def clone
+        g = self.class.new((@vertices.map {|k, v| { v: k, i: v.to_a }}).to_a)
 
         @edge_labels.each { |k, v| g.label_edge!(k.first, k.second, v) }
         @vertex_labels.each { |k, v| g.label_vertex!(k, v) }
@@ -146,11 +146,13 @@ module Silicium
 
     def dijkstra_algorithm!(graph, starting_vertex)
       # TODO Dijkstra algorithm, which should count distance from starting_vertex to each vertex and write it to vertex labels.
+      # see test for example of solved task
       # here you can change the graph itself
     end
 
     def dijkstra_algorithm(graph, starting_vertex)
-      # Notice, that you should not change the graph, but create copy instead
+      g = graph.clone
+      dijkstra_algorithm!(g, starting_vertex)
     end
   end
 end
