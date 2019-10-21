@@ -86,6 +86,54 @@ class GraphTest < SiliciumTest
     assert_equal(g.get_vertex_label(:one), :some_label)
   end
 
+  def test_equal_true
+    g = OrientedGraph.new([{v: 0,     i: [:one]},
+                           {v: :one,  i: [0,'two']},
+                           {v: 'two', i: [0, 'two']}])
+
+    g1 = OrientedGraph.new([{v: 0,     i: [:one]},
+                           {v: :one,  i: [0,'two']},
+                           {v: 'two', i: [0, 'two']}])
+
+    assert_equal(g, g1)
+  end
+
+
+  def test_equal_false
+    g = OrientedGraph.new([{v: 0,     i: [:one]},
+                           {v: :one,  i: [0,'two']},
+                           {v: 'two', i: [0, 'two']}])
+
+    g1 = OrientedGraph.new([{v: 0,     i: [:one]},
+                            {v: :one,  i: [0,'two']},
+                            {v: 'two', i: [0, 'two']},
+                            {v: 4, i: []}])
+
+    refute_equal(g, g1)
+  end
+
+  def test_clone
+    g = OrientedGraph.new([{v: 0,     i: [:one]},
+                           {v: :one,  i: [0,'two']},
+                           {v: 'two', i: [0, 'two']}])
+    g.label_vertex!(:one, :some_label)
+    g.label_edge!(0, :one, :other_label)
+
+    g1 = g.clone
+
+    g1.add_vertex!(4)
+    g1.add_edge!(0, 4)
+    g1.label_vertex!(0, 'label_3')
+    g1.label_edge!(0, 4, 'label_4')
+
+    assert_equal(g.vertex_number, 3)
+    assert_equal(g1.vertex_number, 4)
+
+    assert(!g.has_vertex?(4))
+    assert(!g.has_edge?(0,4))
+    assert(g.get_vertex_label(0) != 'label_3')
+  end
+
   def test_unoriented_add_edge
     g = UnorientedGraph.new([{v: 0,     i: []},
                            {v: :one,  i: []},
