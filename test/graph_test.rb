@@ -154,4 +154,70 @@ class GraphTest < SiliciumTest
     assert_equal(g.get_edge_label(0, :one), :some_label)
     assert_equal(g.get_edge_label(:one, 0), :some_label)
   end
+
+  def test_dijkstra_algotithm_0
+    g = OrientedGraph.new([{v: 1, i: []}])
+
+    g_c = g.clone
+    g_c.label_vertex!(1, {w:0, from: nil})
+
+    g_d = dijkstra_algorithm(g, 1)
+
+    assert_equal(g, g_d)
+    assert(g_c.equal_with_labels?(g_d))
+
+  end
+
+  def test_dijkstra_algotithm_1
+    g = OrientedGraph.new([{v: 1, i: [2, 3]},
+                           {v: 2, i: [3]},
+                           {v: 3, i: []}])
+    g.label_edge!(1,2,10)
+    g.label_edge!(1,3,5)
+    g.label_edge!(2,3,2)
+
+    g_c = g.clone
+    g_c.label_vertex!(1, {w:0, from: nil})
+    g_c.label_vertex!(2, {w:10, from: 1})
+    g_c.label_vertex!(3, {w:5, from: 1})
+
+    g_d = dijkstra_algorithm(g, 1)
+
+    assert_equal(g, g_d)
+    assert(g_c.equal_with_labels?(g_d))
+
+  end
+
+  def test_dijkstra_algotithm_2
+    # notice thai it's an unoriented graph
+    # sample from article in wikipedia
+    g = UnorientedGraph.new([ {v: 1, i: [2, 3, 6]},
+                              {v: 2, i: [3, 4]},
+                              {v: 3, i: [4, 6]},
+                              {v: 4, i: [5]},
+                              {v: 5, i: [6]},
+                              {v: 6, i: []}])
+    g.label_edge!(1,2,7)
+    g.label_edge!(1,3,9)
+    g.label_edge!(1,6,14)
+    g.label_edge!(2,3,10)
+    g.label_edge!(2,4,15)
+    g.label_edge!(3,4,11)
+    g.label_edge!(3,6,2)
+    g.label_edge!(4,5,6)
+    g.label_edge!(5,6,9)
+
+    g_c = g.clone
+    g_c.label_vertex!(1, {w:0, from: nil})
+    g_c.label_vertex!(2, {w:7, from: 1})
+    g_c.label_vertex!(3, {w:9, from: 1})
+    g_c.label_vertex!(4, {w:20, from: 3})
+    g_c.label_vertex!(5, {w:20, from: 6})
+    g_c.label_vertex!(6, {w:11, from: 3})
+
+    g_d = dijkstra_algorithm(g, 1)
+
+    assert_equal(g, g_d)
+    assert(g_c.equal_with_labels?(g_d))
+  end
 end

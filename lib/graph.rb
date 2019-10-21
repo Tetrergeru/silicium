@@ -113,12 +113,22 @@ module Silicium
         @vertices.all?{ |k, v| g.has_vertex?(k) && v.all?{ |e| g.has_edge?(k, e) } }
       end
 
+      def subgraph_with_labels?(g)
+        subgraph?(g) &&
+            @edge_labels.all { |k, v| g.get_edge_label(k) == v} &&
+            @vertex_labels.all { |k, v| g.get_edge_label(k) == v}
+      end
+
       def <=(g)
         subgraph?(g)
       end
 
       def ==(g)
         g.class == self.class && self <= g && g <= self
+      end
+
+      def equal_with_labels?(g)
+        g.class == self.class && subgraph_with_lables?(g) && g.subgraph_with_lables?(self)
       end
     end
 
@@ -134,12 +144,12 @@ module Silicium
       end
     end
 
-    def dijkstra_algorythm!(graph, starting_vertex)
+    def dijkstra_algorithm!(graph, starting_vertex)
       # TODO Dijkstra algorithm, which should count distance from starting_vertex to each vertex and write it to vertex labels.
       # here you can change the graph itself
     end
 
-    def dijkstra_algorythm(graph, starting_vertex)
+    def dijkstra_algorithm(graph, starting_vertex)
       # Notice, that you should not change the graph, but create copy instead
     end
   end
