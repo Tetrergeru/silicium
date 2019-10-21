@@ -113,8 +113,12 @@ module Silicium
         @vertices.all?{ |k, v| g.has_vertex?(k) && v.all?{ |e| g.has_edge?(k, e) } }
       end
 
+      def <=(g)
+        subgraph?(g)
+      end
+
       def ==(g)
-        g.class == self.class && subgraph?(g) && g.subgraph?(self)
+        g.class == self.class && self <= g && g <= self
       end
     end
 
