@@ -150,40 +150,44 @@ module Silicium
       # here you can change the graph itself
 	  #
 	  root = starting_vertex
-	 graph.get_vertices.each{|k, v| graph.label_vertex(k, Infinity)}
+	 graph.get_vertices.each{|k, v| graph.label_vertex!(k, 1000000000000000000)}
 	 checked = 0
-	 graph.label_vertex(root, 0)#@vertex_labels[root] = 0
+	 graph.label_vertex!(root, 0)#@vertex_labels[root] = 0
 	 path = 0
 	 path_verts = []
 	 path_verts << root
-	 path_edges #??
+#	 path_edges #??
 	 
 	 #
 	 until checked == graph.get_vertices.size
-		nxt = graph.get_vertices[root]#reacheble verts
-		nxt.map!{|x|  graph.label_vertex(x, graph.get_edge_label(root, x))   } #@vertex_labels[x] = @edge_labels[(root, x)]*/
-		
+		nxt = graph.adjacted_with(root).to_a#reacheble verts
+		if (graph.get_vertices.size>1)
+      nxt.map!{|x|  graph.label_vertex!(x, graph.get_edge_label(root, x))   } #@vertex_labels[x] = @edge_labels[(root, x)]*/
+
+
 		#next vert with min path
 		min = nxt[0]
 		nxt.each do |x|
-			if ((path + graph.get_edge_label[(root, x)]) =< graph.get_vertex_label[min])#@vertex_labels[x] < @vertex_labels[min]
+			if ((path + graph.get_edge_label(root, x) ) <= graph.get_vertex_label(min))#@vertex_labels[x] < @vertex_labels[min]
 				min = x
 			end
 		
 		end
 		#
-		checked +1
+     end
+		checked +=1
 		path_verts << root
 		
-		path +=  graph.get_edge_label[(root, min)]
+		path = path + graph.get_edge_label(root, min )
 		
 		#to the next vert
 		root = min
     end
-
+    end
     def dijkstra_algorithm(graph, starting_vertex)
       g = graph.clone
       dijkstra_algorithm!(g, starting_vertex)
     end
-  end
+
+    end
 end
