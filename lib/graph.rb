@@ -184,6 +184,7 @@ module Silicium
 
     end
 
+<<<<<<< Updated upstream
     def breadth_first_search?(graph, start, goal)
       visited = Hash.new(false)
       queue = Queue.new
@@ -244,3 +245,43 @@ module Silicium
     end
   end
 end
+=======
+    # Implements algorythm of Dijkstra
+    def dijkstra_algorythm!(graph, starting_vertex)
+      unless graph.has_vertex?(starting_vertex)
+        raise GraphError.new("Graph does not contain starting vertex #{vertex}")
+      end
+      visited = Hash.new(false)
+      marks = Hash.new(-1)
+      min = Hash.new()
+      marks[starting_vertex] = 0
+      dasub!(graph, starting_vertex, visited, marks)
+      min.each do |k,v|
+        graph.vertices[k].each do |x|
+          unless v == x
+            graph.delete_vertex(k,v)
+          end
+        end
+      end
+    end
+    ##
+    # Implements subfunction for algorythm of Dijkstra
+    # Should be used only in dijkstra_algorythm!
+    def dasub!(graph, starting_vertex, visited, marks)
+      graph.vertices[starting_vertex].each do |v|
+        unless visited[v]
+          visited[v] = true
+          if (marks[v] == -1)||(marks[v] > get_edge_label(starting_vertex, v) + marks[starting_vertex])
+            marks[v] = get_edge_label(starting_vertex, v) + marks[starting_vertex]
+            min[v] = starting_vertex
+          end
+        end
+      end
+      nextm = marks.group_by{|k, v| v}.min_by{|k, v| k}.select{|k, v| !visited[k]}
+      unless nextm == {}
+        dasub!(graph, nextm.last, visited, marks)
+      end
+    end
+    end
+end
+>>>>>>> Stashed changes
