@@ -252,7 +252,7 @@ module Silicium
       min.each do |k,v|
         graph.vertices[k].each do |x|
           unless v == x
-            graph.delete_vertex(k,v)
+            graph.delete_vertex!(k,v)
           end
         end
       end
