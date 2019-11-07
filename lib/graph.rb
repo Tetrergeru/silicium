@@ -145,7 +145,7 @@ module Silicium
       def vertices
         @vertices
       end
-      
+
       protected
 
       def protected_add_edge!(from, to)
@@ -184,7 +184,6 @@ module Silicium
 
     end
 
-<<<<<<< Updated upstream
     def breadth_first_search?(graph, start, goal)
       visited = Hash.new(false)
       queue = Queue.new
@@ -240,12 +239,6 @@ module Silicium
       end
     end
 
-    def dijkstra_algorythm(graph, starting_vertex)
-      #
-    end
-  end
-end
-=======
     # Implements algorythm of Dijkstra
     def dijkstra_algorythm!(graph, starting_vertex)
       unless graph.has_vertex?(starting_vertex)
@@ -282,6 +275,6 @@ end
         dasub!(graph, nextm.last, visited, marks)
       end
     end
+
     end
 end
->>>>>>> Stashed changes
