@@ -248,7 +248,7 @@ module Silicium
       marks = Hash.new(-1)
       min = Hash.new()
       marks[starting_vertex] = 0
-      dasub!(graph, starting_vertex, visited, marks)
+      dasub!(graph, starting_vertex, visited, marks, min)
       min.each do |k,v|
         graph.vertices[k].each do |x|
           unless v == x
@@ -260,7 +260,7 @@ module Silicium
     ##
     # Implements subfunction for algorythm of Dijkstra
     # Should be used only in dijkstra_algorythm!
-    def dasub!(graph, starting_vertex, visited, marks)
+    def dasub!(graph, starting_vertex, visited, marks, min)
       graph.vertices[starting_vertex].each do |v|
         unless visited[v]
           visited[v] = true
@@ -272,7 +272,7 @@ module Silicium
       end
       nextm = marks.group_by{|k, v| v}.min_by{|k, v| k}.select{|k, v| !visited[k]}
       unless nextm == {}
-        dasub!(graph, nextm.last, visited, marks)
+        dasub!(graph, nextm.last, visited, marks, min)
       end
     end
 
