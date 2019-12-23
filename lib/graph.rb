@@ -275,32 +275,33 @@ module Silicium
       # here you can change the graph itself
       #
       root = starting_vertex
-      @vertices.each{|k, v| @vertex_labels[k] = 2147483647}
+      graph.get_vertices.each{|k, v| graph.label_vertex!(k, 1000000000000000000)}
       checked = 0
-      @vertex_labels[root] = 0
+      graph.label_vertex!(root, 0)#@vertex_labels[root] = 0
       path = 0
       path_verts = []
       path_verts << root
-      path_edges #??
 
-      #
-      until checked == @vertices.size
-        nxt = @vertices[root]#reacheble verts
-        nxt.map!{|x| @vertex_labels[x] = @edge_labels[(root, x)] }
+      until checked == graph.get_vertices.size
+        nxt = graph.adjacted_with(root).to_a#reacheble verts
+        if graph.get_vertices.size > 1
+          nxt.map!{|x|  graph.label_vertex!(x, graph.get_edge_label(root, x))   } #@vertex_labels[x] = @edge_labels[(root, x)]*/
 
-        #next vert with min path
-        min = nxt[0]
-        nxt.each do |x|
-          if ((path + @edge_labels[(root, x)]) =< @vertex_labels[min])#@vertex_labels[x] < @vertex_labels[min]
-            min = x
+
+          #next vert with min path
+          min = nxt[0]
+          nxt.each do |x|
+            if (path + graph.get_edge_label(root, x) ) <= graph.get_vertex_label(min) #@vertex_labels[x] < @vertex_labels[min]
+              min = x
+            end
+
           end
-
+          #
         end
-        #
         checked +=1
         path_verts << root
 
-        path +=  @edge_labels[(root, min)]
+        path = path + graph.get_edge_label(root, min )
 
         #to the next vert
         root = min
